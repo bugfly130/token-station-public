@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import {
-  DEFAULT_GAS_PRICE} from '@injectivelabs/sdk-ui-ts'
+import { DEFAULT_GAS_PRICE } from '@injectivelabs/sdk-ui-ts'
 import { Locale, english } from '@/locales'
 import { ChainId, EthereumChainId } from '@injectivelabs/ts-types'
 import { Network, getNetworkChainInfo } from '@injectivelabs/networks'
@@ -18,14 +17,13 @@ export const ENV = {
   }
 }
 
-
 type AppStoreState = {
   // App Settings
   locale: Locale
   env: keyof typeof ENV
-  chainId: ChainId,
-  ethereumChainId: EthereumChainId,
-  network: Network,
+  chainId: ChainId
+  ethereumChainId: EthereumChainId
+  network: Network
   gasPrice: string
 }
 
@@ -33,10 +31,9 @@ const initialStateFactory = (): AppStoreState => ({
   // App Settings
   locale: english,
   gasPrice: DEFAULT_GAS_PRICE.toString(),
-  env: "testnet",
-  ...ENV["testnet"]
+  env: 'testnet',
+  ...ENV['testnet']
 })
-
 
 export const useAppStore = defineStore('app', {
   state: (): AppStoreState => initialStateFactory(),

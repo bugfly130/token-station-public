@@ -23,15 +23,15 @@ const links = computed(() => ({
 <template>
   <div>
     <nav class="block flex-1 lg:flex">
-      <LayoutNavMenuItem :to="links.hub" target="_blank" class="block">
+      <!-- <LayoutNavMenuItem :to="links.hub" target="_blank" class="block">
         Bridge
-      </LayoutNavMenuItem>
+      </LayoutNavMenuItem> -->
       <LayoutNavMenuItem :to="links.explorer" target="_blank" class="block">
         Explorer
       </LayoutNavMenuItem>
-      <LayoutNavMenuItem :to="links.helix" target="_blank" class="block">
+      <!-- <LayoutNavMenuItem :to="links.helix" target="_blank" class="block">
         Helix
-      </LayoutNavMenuItem>
+      </LayoutNavMenuItem> -->
       <LayoutNavMenuItem :to="links.faucet" target="_blank" class="block">
         Faucet
       </LayoutNavMenuItem>

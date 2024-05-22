@@ -1,28 +1,41 @@
-import { Network, getNetworkEndpoints } from "@injectivelabs/networks"
-import { ChainGrpcBankApi, ChainGrpcTokenFactoryApi, ChainGrpcExchangeApi, ChainGrpcGovApi, IndexerGrpcAccountApi, IndexerGrpcAccountPortfolioApi, IndexerGrpcSpotApi } from "@injectivelabs/sdk-ts"
-import { TokenService, DenomClientAsync } from "@injectivelabs/sdk-ui-ts"
-import { ChainId } from "@injectivelabs/ts-types";
-import { WalletStrategy, Wallet, MsgBroadcaster } from "@injectivelabs/wallet-ts"
+import { getNetworkEndpoints } from '@injectivelabs/networks'
+import {
+  ChainGrpcBankApi,
+  ChainGrpcTokenFactoryApi,
+  ChainGrpcExchangeApi,
+  ChainGrpcGovApi,
+  IndexerGrpcAccountApi,
+  IndexerGrpcAccountPortfolioApi,
+  IndexerGrpcSpotApi,
+  ChainGrpcWasmApi
+} from '@injectivelabs/sdk-ts'
+import { TokenService, DenomClientAsync } from '@injectivelabs/sdk-ui-ts'
+import { ChainId } from '@injectivelabs/ts-types'
+import {
+  WalletStrategy,
+  Wallet,
+  MsgBroadcaster
+} from '@injectivelabs/wallet-ts'
 
-
-export const cache = ref({} as Record<string, Service>);
+// eslint-disable-next-line no-use-before-define
+export const cache = ref({} as Record<string, Service>)
 
 interface Service {
-  walletStrategy: WalletStrategy;
-  msgBroadcastClient: MsgBroadcaster;
-  tokenService: TokenService;
-  demonClient: DenomClientAsync;
-  bankApi : ChainGrpcBankApi,
-  exchangeApi : ChainGrpcExchangeApi,
-  govApi : ChainGrpcGovApi,
-  tokenFactoryApi : ChainGrpcTokenFactoryApi,
-  indexerAccountApi : IndexerGrpcAccountApi,
-  indexerAccountPortfolioApi : IndexerGrpcAccountPortfolioApi,
-  indexerGrpcSpotApi: IndexerGrpcSpotApi;
-
+  walletStrategy: WalletStrategy
+  msgBroadcastClient: MsgBroadcaster
+  tokenService: TokenService
+  demonClient: DenomClientAsync
+  wasmApi: ChainGrpcWasmApi
+  bankApi: ChainGrpcBankApi
+  exchangeApi: ChainGrpcExchangeApi
+  govApi: ChainGrpcGovApi
+  tokenFactoryApi: ChainGrpcTokenFactoryApi
+  indexerAccountApi: IndexerGrpcAccountApi
+  indexerAccountPortfolioApi: IndexerGrpcAccountPortfolioApi
+  indexerGrpcSpotApi: IndexerGrpcSpotApi
 }
 export function useChainService() {
-  const { chainId, network, ethereumChainId  } = useAppStore()
+  const { chainId, network, ethereumChainId } = useAppStore()
 
   if (cache.value[chainId]) {
     return cache.value[chainId]
@@ -35,11 +48,14 @@ export function useChainService() {
     ethereumOptions: {
       ethereumChainId,
       rpcUrl:
-      chainId === ChainId.Mainnet ? 'https://eth-mainnet.g.alchemy.com/v2/xvBpvW4QoQbNaWH2FfnAJqOGj7eVTla3' : 'https://eth-goerli.g.alchemy.com/v2/QMAB-ff5mVvVNiThapgsdUgmFUehwnSk'
+        chainId === ChainId.Mainnet
+          ? 'https://eth-mainnet.g.alchemy.com/v2/xvBpvW4QoQbNaWH2FfnAJqOGj7eVTla3'
+          : 'https://eth-goerli.g.alchemy.com/v2/QMAB-ff5mVvVNiThapgsdUgmFUehwnSk'
     },
     disabledWallets: [Wallet.WalletConnect, Wallet.CosmostationEth]
   })
 
+  const wasmApi = new ChainGrpcWasmApi(endpoints.grpc)
 
   const bankApi = new ChainGrpcBankApi(endpoints.grpc)
 
@@ -57,7 +73,7 @@ export function useChainService() {
   // Transaction broadcaster
   const msgBroadcastClient = new MsgBroadcaster({
     walletStrategy,
-    network: network,
+    network,
     networkEndpoints: endpoints,
     simulateTx: true
   })
@@ -66,14 +82,19 @@ export function useChainService() {
     chainId,
     network
   })
-  const demonClient = new DenomClientAsync(network, { alchemyRpcUrl: chainId ===  ChainId.Mainnet ? 'xvBpvW4QoQbNaWH2FfnAJqOGj7eVTla3' : 'MAB-ff5mVvVNiThapgsdUgmFUehwnSk' })
+  const demonClient = new DenomClientAsync(network, {
+    alchemyRpcUrl:
+      chainId === ChainId.Mainnet
+        ? 'xvBpvW4QoQbNaWH2FfnAJqOGj7eVTla3'
+        : 'MAB-ff5mVvVNiThapgsdUgmFUehwnSk'
+  })
 
-
-  cache.value[chainId] =  {
+  cache.value[chainId] = {
     walletStrategy,
     msgBroadcastClient,
     tokenService,
     demonClient,
+    wasmApi,
     bankApi,
     exchangeApi,
     govApi,

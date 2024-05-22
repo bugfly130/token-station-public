@@ -70,7 +70,14 @@ const { value: decimals, errorMessage: decimalsError } = useNumberFieldCustom({
     </p>
   </div>
   <div class="mb-6">
-    <AppLogoUploader v-model="uri" />
+    <AppInput
+      v-model="uri"
+      label="uri*"
+      placeholder="Metadata Uri"
+      input-classes="focus:border focus:border-solid focus:border-gray-300"
+      class="w-full max-w-96 border border-gray-300 py-1"
+      :transparent-bg="true"
+    />
     <p v-if="uriError" class="text-red-500 text-xs mt-1">
       {{ uriError }}
     </p>

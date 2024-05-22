@@ -1,16 +1,8 @@
 import { defineStore } from 'pinia'
 import { TokenFactoryModuleParams } from '@injectivelabs/sdk-ts/dist/cjs/client/chain/types/tokenfactory'
 import { FactoryToken, Token, TokenType } from '@injectivelabs/token-metadata'
-import {
-  burnToken,
-  changeTokenAdmin,
-  createNewToken,
-  mintToken,
-  transferToken,
-  transferMultiToken,
-  updateTokenMetadata
-} from './message'
-import { fetchParams, fetchToken, fetchTokens } from './fetch'
+import { createNewToken } from './message'
+import { fetchTokens } from './fetch'
 
 type TokenStoreState = {
   params: TokenFactoryModuleParams
@@ -38,17 +30,8 @@ export const useTokenStore = defineStore('token', {
   },
   actions: {
     createNewToken,
-    updateTokenMetadata,
-    mintToken,
-    burnToken,
-    transferToken,
-    transferMultiToken,
-    changeTokenAdmin,
-
-    fetchParams,
 
     fetchTokens,
-    fetchToken,
 
     reset() {
       useTokenStore().$reset()

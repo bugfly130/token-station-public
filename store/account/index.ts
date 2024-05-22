@@ -20,9 +20,12 @@ export const useAccountStore = defineStore('account', {
         return {}
       }
 
-      return state.bankBalances.reduce((list, balance) => {
-        return { ...list, [balance.denom]: balance.amount }
-      }, {} as Record<string, string>)
+      return state.bankBalances.reduce(
+        (list, balance) => {
+          return { ...list, [balance.denom]: balance.amount }
+        },
+        {} as Record<string, string>
+      )
     },
 
     hasEnoughInjForGas: (state) => {
@@ -43,7 +46,6 @@ export const useAccountStore = defineStore('account', {
     async fetchAccountPortfolio() {
       const accountStore = useAccountStore()
       const walletStore = useWalletStore()
-      const appStore = useAppStore()
 
       const { indexerAccountPortfolioApi } = useChainService()
 
@@ -51,7 +53,8 @@ export const useAccountStore = defineStore('account', {
         return
       }
 
-      const accountPortfolio = await indexerAccountPortfolioApi.fetchAccountPortfolio(
+      const accountPortfolio =
+        await indexerAccountPortfolioApi.fetchAccountPortfolio(
           walletStore.injectiveAddress
         )
 

@@ -29,7 +29,7 @@
           <p class="font-semibold text-base text-white">Create Token</p>
         </div>
       </NuxtLink>
-      <NuxtLink
+      <!-- <NuxtLink
         to="/tokens"
         class="p-4 block group hover:bg-gray-700 relative z-50"
         exact
@@ -39,7 +39,7 @@
           <AssetSettingsIcon class="w-5 h-5 fill-gray-400" />
           <p class="font-semibold text-base text-white">Manage Token</p>
         </div>
-      </NuxtLink>
+      </NuxtLink> -->
       <NuxtLink
         to="/market"
         class="p-4 block group hover:bg-gray-700 relative z-50"
@@ -50,10 +50,12 @@
             name="graph-up"
             class="w-5 h-5 fill-gray-400 text-gray-400"
           />
-          <p class="font-semibold text-base text-white">Launch Market</p>
+          <p class="font-semibold text-base text-white">
+            Create Liquidity Pair
+          </p>
         </div>
       </NuxtLink>
-      <NuxtLink
+      <!-- <NuxtLink
         to="/distribution"
         class="p-4 block group hover:bg-gray-700 relative z-50"
         data-cy="header-trade-link"
@@ -102,7 +104,7 @@
           </svg>
           <p class="font-semibold text-base text-white">Snapshots</p>
         </div>
-      </NuxtLink>
+      </NuxtLink> -->
       <!-- <NuxtLink
         to="/airdrop"
         class="p-4 block group hover:bg-gray-700 relative z-50"

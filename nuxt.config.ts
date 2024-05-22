@@ -18,12 +18,12 @@ export default defineNuxtConfig({
     vercel: {
       functions: {
         maxDuration: 120,
-        memory: 1024,
-      },
+        memory: 1024
+      }
     },
     storage: {
-      cache: isProduction ? { driver: 'vercelKV' }  : undefined
-    },
+      cache: undefined //isProduction ? { driver: 'vercelKV' } : undefined
+    }
   },
 
   typescript: {

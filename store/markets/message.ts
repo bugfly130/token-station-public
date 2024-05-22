@@ -1,7 +1,4 @@
-import {
-  MsgInstantSpotMarketLaunch,
-  MsgSubmitProposalSpotMarketLaunch
-} from '@injectivelabs/sdk-ts'
+import { MsgExecuteContractCompat } from '@injectivelabs/sdk-ts'
 import { useChainService } from '~/composables/useChainService'
 
 interface MarketParams {
@@ -9,56 +6,27 @@ interface MarketParams {
   quoteDenom: string
   minPriceTickSize: string
   minQuantityTickSize: string
-  ticker: string
 }
 
-export const instantSpotMarketLaunch = async (market: MarketParams) => {
+const TOKEN_CONTRACT_ADDRESS = ''
+export const createMarketLaunch = async (market: MarketParams) => {
   const walletStore = useWalletStore()
   const { msgBroadcastClient } = useChainService()
 
   await walletStore.validate()
 
-  const msg = MsgInstantSpotMarketLaunch.fromJSON({
-    market: {
-      ...market,
-      sender: walletStore.injectiveAddress
-    },
-    proposer: walletStore.injectiveAddress
+  // Preparing the message
+  const msgCreateMarket = MsgExecuteContractCompat.fromJSON({
+    contractAddress: TOKEN_CONTRACT_ADDRESS,
+    sender: walletStore.injectiveAddress,
+    msg: {
+      createMarket: market
+    }
   })
 
-  await msgBroadcastClient.broadcastWithFeeDelegation({
-    address: walletStore.injectiveAddress,
-    msgs: [msg]
-  })
-}
-
-export const submitProposalSpotMarketLaunch = async (
-  title: string,
-  description: string,
-  makerFeeRate: string,
-  takerFeeRate: string,
-  market: MarketParams,
-  deposit: { amount: string; denom: string }
-) => {
-  const walletStore = useWalletStore()
-  const { msgBroadcastClient } = useChainService()
-
-  await walletStore.validate()
-
-  const msg = MsgSubmitProposalSpotMarketLaunch.fromJSON({
-    market: {
-      title,
-      description,
-      makerFeeRate,
-      takerFeeRate,
-      ...market
-    },
-    proposer: walletStore.injectiveAddress,
-    deposit
-  })
-
-  await msgBroadcastClient.broadcastWithFeeDelegation({
-    address: walletStore.injectiveAddress,
-    msgs: [msg as any]
+  // Signing and broadcasting the message
+  await msgBroadcastClient.broadcast({
+    msgs: msgCreateMarket,
+    injectiveAddress: walletStore.injectiveAddress
   })
 }

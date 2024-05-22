@@ -1,29 +1,28 @@
-import { prisma } from "~/server/prisma";
+import { prisma } from '~/server/prisma'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  const token = getHeader(event, "X-Token")
+  const token = getHeader(event, 'X-Token')
 
-  if (token != process.env.API_TOKEN!) {
+  if (token !== process.env.API_TOKEN!) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Unauthorized',
-    });
+      statusMessage: 'Unauthorized'
+    })
   }
-
 
   if (body == null) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Bad request: param date',
-    });
+      statusMessage: 'Bad request: param date'
+    })
   }
   await prisma.snapshot.create({
     data: body
-  });
+  })
 
   return {
-    msg: "OK"
+    msg: 'OK'
   }
 })

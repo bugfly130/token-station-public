@@ -78,7 +78,7 @@
     "vue-gtag": "^2.0.2-beta.0",
     "vue-hotjar": "^1.4.0",
     "vue-jest": "^4.0.0-0",
-    "xlsx": "file:vendor/xlsx-0.20.1.tgz"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
   },
   "devDependencies": {
     "@bangjelkoski/node-stdlib-browser": "^0.0.1",
